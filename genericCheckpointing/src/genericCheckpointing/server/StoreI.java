@@ -1,6 +1,9 @@
 package genericCheckpointing.server;
 
-public interface StoreIextends StoreRestoreI {
-      void writeObj(MyAllTypesFirst aRecord, int authID, String wireFormat);
-      void writeObj(MyAllTypesSecond bRecord, int authID, String wireFormat);
+import genericCheckpointing.util.MyAllTypesFirst;
+import genericCheckpointing.util.MyAllTypesSecond;
+
+public interface StoreI extends StoreRestoreI {
+      public void writeObj(MyAllTypesFirst aRecord, String wireFormat);
+      public void writeObj(MyAllTypesSecond bRecord, String wireFormat);
 }
