@@ -3,6 +3,8 @@ package genericCheckpointing.xmlStoreRestore;
 import genericCheckpointing.util.SerializableObject;
 import genericCheckpointing.util.Results;
 import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 
 // create a new class to implement the XMLSerialization Strategy
 
@@ -34,73 +36,26 @@ public class XMLSerialization implements SerStrategy {
 
     		XMLText += "  <complexType xsi:type=\""+cls.getName()+"\">\n";
 
-    		if(className.equals("genericCheckpointing.util.MyAllTypesFirst")){
-    			String fieldName = "myInt";
-	  			String methodName = "get" + fieldName;
-        		Method getterMethod = cls.getMethod(methodName);
-        		Object invokeRet = getterMethod.invoke(sObject);
-        		XMLText += "    <myInt xsi:type=\"xsd:int\">"+invokeRet+"</myInt>\n";
 
-        		fieldName = "myLong";
-	  			methodName = "get" + fieldName;
-        		getterMethod = cls.getMethod(methodName);
-        		invokeRet = getterMethod.invoke(sObject);
-        		XMLText += "    <myLong xsi:type=\"xsd:long\">"+invokeRet+"</myLong>\n";
+            for(Field field : cls.getDeclaredFields()){
+                String fieldName = field.getName();
+                Type fieldType = field.getType();
+                String methodName = "get" + fieldName;
+                Method getterMethod = cls.getMethod(methodName);
+                Object invokeRet = getterMethod.invoke(sObject);
 
-    			fieldName = "myString";
-	  			methodName = "get" + fieldName;
-        		getterMethod = cls.getMethod(methodName);
-        		invokeRet = getterMethod.invoke(sObject);
-        		XMLText += "    <myString xsi:type=\"xsd:string\">"+invokeRet+"</myString>\n";
-
-        		fieldName = "myBool";
-	  			methodName = "get" + fieldName;
-        		getterMethod = cls.getMethod(methodName);
-        		invokeRet = getterMethod.invoke(sObject);
-        		XMLText += "    <myBool xsi:type=\"xsd:boolean\">"+invokeRet+"</myBool>\n";
-
-        		fieldName = "myOtherInt";
-	  			methodName = "get" + fieldName;
-        		getterMethod = cls.getMethod(methodName);
-        		invokeRet = getterMethod.invoke(sObject);
-        		XMLText += "    <myOtherInt xsi:type=\"xsd:int\">"+invokeRet+"</myOtherInt>\n";
-
-    		}else{
-    			String fieldName = "myDoubleT";
-	  			String methodName = "get" + fieldName;
-        		Method getterMethod = cls.getMethod(methodName);
-        		Object invokeRet = getterMethod.invoke(sObject);
-        		XMLText += "    <myDoubleT xsi:type=\"xsd:double\">"+invokeRet+"</myDoubleT>\n";
-
-        		fieldName = "myFloatT";
-	  			methodName = "get" + fieldName;
-        		getterMethod = cls.getMethod(methodName);
-        		invokeRet = getterMethod.invoke(sObject);
-        		XMLText += "    <myFloatT xsi:type=\"xsd:float\">"+invokeRet+"</myFloatT>\n";
-
-    			fieldName = "myShortT";
-	  			methodName = "get" + fieldName;
-        		getterMethod = cls.getMethod(methodName);
-        		invokeRet = getterMethod.invoke(sObject);
-        		XMLText += "    <myShortT xsi:type=\"xsd:short\">"+invokeRet+"</myShortT>\n";
-
-        		fieldName = "myCharT";
-	  			methodName = "get" + fieldName;
-        		getterMethod = cls.getMethod(methodName);
-        		invokeRet = getterMethod.invoke(sObject);
-        		XMLText += "    <myCharT xsi:type=\"xsd:char\">"+invokeRet+"</myCharT>\n";
-
-                fieldName = "myOtherDoubleT";
-                methodName = "get" + fieldName;
-                getterMethod = cls.getMethod(methodName);
-                invokeRet = getterMethod.invoke(sObject);
-                XMLText += "    <myOtherDoubleT xsi:type=\"xsd:double\">"+invokeRet+"</myOtherDoubleT>\n";
-    		}
+                if(isValidValue(fieldType , invokeRet)){
+                    if(fieldType == String.class){
+                        XMLText += "    <"+fieldName + " xsi:type=\"xsd:string\">"+invokeRet+"</"+fieldName+">\n"; 
+                    }else{
+                        XMLText += "    <"+fieldName + " xsi:type=\"xsd:"+fieldType+"\">"+invokeRet+"</"+fieldName+">\n"; 
+                    }
+                }
+            }
 
     		XMLText += "  </complexType>\n";
 			XMLText += "</DPSerialization>";
 
-        	System.out.println(XMLText);
         	results.writeSchedulesToFile(XMLText);
             return null;
     	}
@@ -110,6 +65,23 @@ public class XMLSerialization implements SerStrategy {
 	    	System.exit(0);
             return null;
     	}
+   }
+
+   private boolean isValidValue(Type fieldType , Object value){
+        if(fieldType == int.class){
+            if((int)value<10){
+                return false;
+            }
+        }else if(fieldType == double.class){
+            if((double)value<10){
+                return false;
+            }
+        }else if(fieldType == long.class){
+            if((long)value<10){
+                return false;
+            }
+        }
+        return true;
    }
 }
 

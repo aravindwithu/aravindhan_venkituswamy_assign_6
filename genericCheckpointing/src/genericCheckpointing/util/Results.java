@@ -20,7 +20,6 @@ public class Results implements FileDisplayInterface, StdoutDisplayInterface{
 	*/
 	public Results(String outputFile){
 		try{
-			MyLogger.writeMessage("Inside Results constructor",MyLogger.DebugLevel.CONSTRUCTOR);
 			// Object for PrintWriter is intialized with respective output file name and encoding format.
 			// To write original Tree to the output file.
 			writer = new PrintWriter(outputFile, "UTF-8");
@@ -73,8 +72,8 @@ public class Results implements FileDisplayInterface, StdoutDisplayInterface{
 	* prints the given string to command line.
 	* @param s to print the same to output command line.
 	*/
-	public void writeToScreen(String string){
-		MyLogger.writeMessage("Result debuging - "+string,MyLogger.DebugLevel.FILE_WRITE);
+	public void writeToScreen(String str){
+		System.out.println(str);
 	}
 
 	/**

@@ -1,7 +1,5 @@
 package genericCheckpointing.util;
 
-import genericCheckpointing.util.MyLogger;
-
 public class MyAllTypesFirst extends SerializableObject{
 	
 	private int myInt;
@@ -9,14 +7,11 @@ public class MyAllTypesFirst extends SerializableObject{
 	private String myString;
 	private boolean myBool;
 	private int myOtherInt;
-	private MyLogger myLogger;
 
 	public MyAllTypesFirst(){
-		myLogger.writeMessage("Inside MyAllTypesFirst constructor",MyLogger.DebugLevel.CONSTRUCTOR);
 	};
 
 	public MyAllTypesFirst(int myIntIn, long myLongIn, String myStringIn, boolean myBoolIn, int myOtherIntIn){
-		myLogger.writeMessage("Inside MyAllTypesFirst constructor",MyLogger.DebugLevel.CONSTRUCTOR);
 		myInt = myIntIn;
 		myLong = myLongIn;
 		myString = myStringIn;
@@ -62,5 +57,39 @@ public class MyAllTypesFirst extends SerializableObject{
 
 	public void setmyOtherInt(int value){
 		myOtherInt = value;
+	}
+
+	@Override
+	public boolean equals(Object obj){
+		if(! (obj instanceof MyAllTypesFirst)){
+			return false;
+		}
+		MyAllTypesFirst checkObj = (MyAllTypesFirst)obj;
+		if(myInt == checkObj.myInt 
+			&& myLong == checkObj.myLong 
+			&& myString.equals(checkObj.myString) 
+			&& myBool == checkObj.myBool 
+			&& myOtherInt == checkObj.myOtherInt){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public int hashCode() {
+        int result = 0;
+        result = (int) (myInt / 11);
+        return result;
+    }
+
+	@Override
+	public String toString(){
+		String str = "MyAllTypesFirst:";
+		str += " myInt = " + myInt;
+		str += "; myLong = " + myLong;
+		str += "; myString = " + myString;
+		str += "; myBool = " + myBool;
+		str += "; myOtherInt = " + myOtherInt; 
+		return str;
 	}
 }

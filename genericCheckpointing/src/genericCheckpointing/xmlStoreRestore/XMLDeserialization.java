@@ -63,12 +63,11 @@ public class XMLDeserialization implements SerStrategy {
 			}else{
 				String[] words = lineIn.split("=");
 				String methodName = "set" + getFieldName(words[0].trim());
-
 				String fieldType = getFieldType(words[1].trim());
 				String fieldValue = getFieldValue(words[1].trim());
 				Method setterMethod = processSetterMethod(cls, methodName, fieldType);
 				Object setObjVal = processSetObjVal(fieldType, fieldValue);
-       			setterMethod.invoke(objInst, setObjVal);
+       	setterMethod.invoke(objInst, setObjVal);
 			}
 		}
 		return null;

@@ -4,7 +4,6 @@ import genericCheckpointing.util.ProxyCreator;
 import genericCheckpointing.util.SerializableObject;
 import genericCheckpointing.util.MyAllTypesFirst;
 import genericCheckpointing.util.MyAllTypesSecond;
-import genericCheckpointing.util.MyLogger;
 import genericCheckpointing.util.FileProcessor;
 import genericCheckpointing.server.RestoreI;
 import genericCheckpointing.server.StoreI;
@@ -15,15 +14,13 @@ import java.util.Vector;
 public class Driver 
 {
 	public static void main(String[] args) 
-	{
-		MyLogger myLogger; 
+	{ 
 		FileProcessor file;
 		// FIXME: read the value of checkpointFile from the command line
 	   // FileProcessor file;
 	    try{
 	    	// command line validation for input file and output file respectively.
 	    	String mode = "", outputFile = "";
-	    	myLogger = new MyLogger();
 	    	int N =0 , logger = 0;
 		    if(4 == args.length){// validates given arguments array length to 3.
 		    	if(!args[0].equals("${arg0}") && !args[0].equals("")){// validates 1st input file argument value.
@@ -54,27 +51,8 @@ public class Driver
 		    	}
 		    }
 		    else{
-		    	throw new Exception("Please pass atleast 3 arguments 1.mode, 2.N, and 3.output-file.");
+		    	throw new Exception("Please pass exactly 3 arguments 1.mode, 2.N, and 3.output-file.");
 		    }
-		    
-		    if(!args[3].equals("${arg4}") && !args[3].equals("")){
-			    String arg2 = "01234";// validates logger value is between 0 and 4.
-				if(args[3].length() != 1 || (!arg2.contains(args[3]))){
-					throw new Exception("Logger value is incorrect");
-				}
-				else{
-					try{
-						logger = Integer.parseInt(args[3]);
-						myLogger.setDebugValue(logger);
-					}
-					catch(Exception e){
-						e.printStackTrace();
-						System.exit(0);
-					}					
-				}
-			}else{
-				// by default logger value is 0;
-			}
 	
 			ProxyCreator pc = new ProxyCreator();
 			StoreRestoreHandler storeRestoreHandler = new StoreRestoreHandler();
@@ -91,27 +69,50 @@ public class Driver
 			// For deser, just deserliaze the input file into the data structure and then print the objects
 			
 			if(mode.equals("serdeser")){
-				Vector<SerializableObject> serVectorOld = new Vector<SerializableObject>();
+				Vector<SerializableObject> serVector = new Vector<SerializableObject>();
 				((StoreI) cpointRef).setCheckPointFile(outputFile);
 				for (int i=0; i<N; i++) {
-					float a = 3.3f;
-					short b = 1;
-					MyAllTypesFirst myObjFirst = new MyAllTypesFirst(i+10, i*9999, "random", true, i+2);
-					serVectorOld.add(myObjFirst);
+					boolean aBool = ((i%2) == 0);
+					MyAllTypesFirst myObjFirst = new MyAllTypesFirst(i+9, i*9999, ("index_"+i), aBool, i+7);
+					serVector.add(myObjFirst);
 					((StoreI) cpointRef).writeObj(myObjFirst, "XML");
 					
-					MyAllTypesSecond myObjSecound = new MyAllTypesSecond(i*9.9, a, b,'c', i*4.);
-					serVectorOld.add(myObjSecound);
+					double aDouble = (i/2) * 9.9;
+					double bDouble = (i/3) * 5.9;
+					float aFloat = (float)i* 3.3f;
+					short aShort = (short)i;
+					MyAllTypesSecond myObjSecound = new MyAllTypesSecond(aDouble, aFloat, aShort, 'c', bDouble);
+					serVector.add(myObjSecound);
 				    ((StoreI) cpointRef).writeObj(myObjSecound, "XML");
 				}
 				((StoreI) cpointRef).closeCheckPointFile();
+
+				Vector<SerializableObject> deserVector = new Vector<SerializableObject>();
+				((RestoreI) cpointRef).setReadFile(outputFile);
+				for (int i=0; i<2*N; i++) {
+					SerializableObject deSerObj= (SerializableObject)((RestoreI) cpointRef).readObj(outputFile);
+					deserVector.add(deSerObj);
+				}
+				((RestoreI) cpointRef).closeReadFile();
+
+				int missCount = 0;
+				for (int i=0; i<2*N; i++) {
+					SerializableObject ser = serVector.get(i);
+					SerializableObject deser = deserVector.get(i);
+					if(!ser.equals(deser)){
+						missCount++;
+					}
+				}
+
+				System.out.println("Number of mismatch obj is "+missCount);
 			}
 			else{
-				Vector<SerializableObject> serVectorNew = new Vector<SerializableObject>();
+				Vector<SerializableObject> deserVector = new Vector<SerializableObject>();
 				((RestoreI) cpointRef).setReadFile(outputFile);
 				for (int j=0; j<2*N; j++) {
 					SerializableObject deSerObj= (SerializableObject)((RestoreI) cpointRef).readObj(outputFile);
-					serVectorNew.add(deSerObj);
+					deserVector.add(deSerObj);
+					System.out.println(deSerObj.toString()+"\n");
 				}
 				((RestoreI) cpointRef).closeReadFile();
 			}

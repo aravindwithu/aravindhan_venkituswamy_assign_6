@@ -1,13 +1,10 @@
 package genericCheckpointing.util;
 
-import genericCheckpointing.util.MyLogger;
-
 public class MyAllTypesSecond extends SerializableObject{
 	private double myDoubleT;
 	private float myFloatT;
 	private short myShortT;
 	private char myCharT;
-	private MyLogger myLogger;
 	private double myOtherDoubleT;
 
 	public MyAllTypesSecond(){
@@ -15,7 +12,6 @@ public class MyAllTypesSecond extends SerializableObject{
 	}
 
 	public MyAllTypesSecond(double myDoubleTIn, float myFloatTIn, short myShortTIn, char myCharTIn, double myOtherDoubleTIn){
-		myLogger.writeMessage("Inside MyAllTypesSecond constructor",MyLogger.DebugLevel.CONSTRUCTOR);
 		myDoubleT = myDoubleTIn;
 		myFloatT = myFloatTIn;
 		myShortT = myShortTIn;
@@ -61,5 +57,39 @@ public class MyAllTypesSecond extends SerializableObject{
 
 	public void setmyOtherDoubleT(double value){
 		myDoubleT = value;
+	}
+
+	@Override
+	public boolean equals(Object obj){
+		if(! (obj instanceof MyAllTypesSecond)){
+			return false;
+		}
+		MyAllTypesSecond checkObj = (MyAllTypesSecond)obj;
+		if(myDoubleT == checkObj.myDoubleT 
+			&& myFloatT == checkObj.myFloatT 
+			&& myShortT == checkObj.myShortT 
+			&& myCharT == checkObj.myCharT 
+			&& myOtherDoubleT == checkObj.myOtherDoubleT){
+			return true;
+		}else{
+			return false;
+		}
+	}
+
+	public int hashCode() {
+        int result = 0;
+        result = (int) (myDoubleT / 11);
+        return result;
+    }
+
+	@Override
+	public String toString(){
+		String str = "MyAllTypesSecond:";
+		str += " myDoubleT = " + myDoubleT;
+		str += "; myFloatT = " + myFloatT;
+		str += "; myShortT = " + myShortT;
+		str += "; myCharT = " + myCharT; 
+		str += "; myOtherDoubleT = " + myOtherDoubleT; 
+		return str;
 	}
 }

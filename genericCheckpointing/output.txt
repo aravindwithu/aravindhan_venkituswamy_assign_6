@@ -1,18 +1,95 @@
 <DPSerialization>
   <complexType xsi:type="genericCheckpointing.util.MyAllTypesFirst">
-    <myInt xsi:type="xsd:int">10</myInt>
-    <myLong xsi:type="xsd:long">0</myLong>
-    <myString xsi:type="xsd:string">random</myString>
+    <myString xsi:type="xsd:string">index_0</myString>
     <myBool xsi:type="xsd:boolean">true</myBool>
-    <myOtherInt xsi:type="xsd:int">2</myOtherInt>
   </complexType>
 </DPSerialization>
 <DPSerialization>
   <complexType xsi:type="genericCheckpointing.util.MyAllTypesSecond">
-    <myDoubleT xsi:type="xsd:double">0.0</myDoubleT>
+    <myFloatT xsi:type="xsd:float">0.0</myFloatT>
+    <myShortT xsi:type="xsd:short">0</myShortT>
+    <myCharT xsi:type="xsd:char">c</myCharT>
+  </complexType>
+</DPSerialization>
+<DPSerialization>
+  <complexType xsi:type="genericCheckpointing.util.MyAllTypesFirst">
+    <myInt xsi:type="xsd:int">10</myInt>
+    <myLong xsi:type="xsd:long">9999</myLong>
+    <myString xsi:type="xsd:string">index_1</myString>
+    <myBool xsi:type="xsd:boolean">false</myBool>
+  </complexType>
+</DPSerialization>
+<DPSerialization>
+  <complexType xsi:type="genericCheckpointing.util.MyAllTypesSecond">
     <myFloatT xsi:type="xsd:float">3.3</myFloatT>
     <myShortT xsi:type="xsd:short">1</myShortT>
     <myCharT xsi:type="xsd:char">c</myCharT>
-    <myOtherDoubleT xsi:type="xsd:double">0.0</myOtherDoubleT>
+  </complexType>
+</DPSerialization>
+<DPSerialization>
+  <complexType xsi:type="genericCheckpointing.util.MyAllTypesFirst">
+    <myInt xsi:type="xsd:int">11</myInt>
+    <myLong xsi:type="xsd:long">19998</myLong>
+    <myString xsi:type="xsd:string">index_2</myString>
+    <myBool xsi:type="xsd:boolean">true</myBool>
+  </complexType>
+</DPSerialization>
+<DPSerialization>
+  <complexType xsi:type="genericCheckpointing.util.MyAllTypesSecond">
+    <myFloatT xsi:type="xsd:float">6.6</myFloatT>
+    <myShortT xsi:type="xsd:short">2</myShortT>
+    <myCharT xsi:type="xsd:char">c</myCharT>
+  </complexType>
+</DPSerialization>
+<DPSerialization>
+  <complexType xsi:type="genericCheckpointing.util.MyAllTypesFirst">
+    <myInt xsi:type="xsd:int">12</myInt>
+    <myLong xsi:type="xsd:long">29997</myLong>
+    <myString xsi:type="xsd:string">index_3</myString>
+    <myBool xsi:type="xsd:boolean">false</myBool>
+    <myOtherInt xsi:type="xsd:int">10</myOtherInt>
+  </complexType>
+</DPSerialization>
+<DPSerialization>
+  <complexType xsi:type="genericCheckpointing.util.MyAllTypesSecond">
+    <myFloatT xsi:type="xsd:float">9.9</myFloatT>
+    <myShortT xsi:type="xsd:short">3</myShortT>
+    <myCharT xsi:type="xsd:char">c</myCharT>
+  </complexType>
+</DPSerialization>
+<DPSerialization>
+  <complexType xsi:type="genericCheckpointing.util.MyAllTypesFirst">
+    <myInt xsi:type="xsd:int">13</myInt>
+    <myLong xsi:type="xsd:long">39996</myLong>
+    <myString xsi:type="xsd:string">index_4</myString>
+    <myBool xsi:type="xsd:boolean">true</myBool>
+    <myOtherInt xsi:type="xsd:int">11</myOtherInt>
+  </complexType>
+</DPSerialization>
+<DPSerialization>
+  <complexType xsi:type="genericCheckpointing.util.MyAllTypesSecond">
+    <myDoubleT xsi:type="xsd:double">19.8</myDoubleT>
+    <myFloatT xsi:type="xsd:float">13.2</myFloatT>
+    <myShortT xsi:type="xsd:short">4</myShortT>
+    <myCharT xsi:type="xsd:char">c</myCharT>
+    <myOtherDoubleT xsi:type="xsd:double">19.8</myOtherDoubleT>
+  </complexType>
+</DPSerialization>
+<DPSerialization>
+  <complexType xsi:type="genericCheckpointing.util.MyAllTypesFirst">
+    <myInt xsi:type="xsd:int">14</myInt>
+    <myLong xsi:type="xsd:long">49995</myLong>
+    <myString xsi:type="xsd:string">index_5</myString>
+    <myBool xsi:type="xsd:boolean">false</myBool>
+    <myOtherInt xsi:type="xsd:int">12</myOtherInt>
+  </complexType>
+</DPSerialization>
+<DPSerialization>
+  <complexType xsi:type="genericCheckpointing.util.MyAllTypesSecond">
+    <myDoubleT xsi:type="xsd:double">19.8</myDoubleT>
+    <myFloatT xsi:type="xsd:float">16.5</myFloatT>
+    <myShortT xsi:type="xsd:short">5</myShortT>
+    <myCharT xsi:type="xsd:char">c</myCharT>
+    <myOtherDoubleT xsi:type="xsd:double">19.8</myOtherDoubleT>
   </complexType>
 </DPSerialization>

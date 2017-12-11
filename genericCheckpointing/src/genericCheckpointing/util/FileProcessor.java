@@ -16,7 +16,6 @@ public class FileProcessor{
 	public FileProcessor(String filename){
 		File fileCheck;
 		try{
-			MyLogger.writeMessage("Inside FileProcessor constructor",MyLogger.DebugLevel.CONSTRUCTOR);
 			// Check if file doesn't exist
 			fileCheck = new File(filename);
 			if(!fileCheck.exists() || fileCheck.isDirectory()) {
