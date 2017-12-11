@@ -8,13 +8,15 @@ public class MyAllTypesSecond extends SerializableObject{
 	private short myShortT;
 	private char myCharT;
 	private MyLogger myLogger;
+	private double myOtherDoubleT;
 
-	public MyAllTypesSecond(double myDoubleTIn, float myFloatTIn, short myShortTIn, char myCharTIn){
+	public MyAllTypesSecond(double myDoubleTIn, float myFloatTIn, short myShortTIn, char myCharTIn, double myOtherDoubleTIn){
 		myLogger.writeMessage("Inside MyAllTypesSecond constructor",MyLogger.DebugLevel.CONSTRUCTOR);
 		myDoubleT = myDoubleTIn;
 		myFloatT = myFloatTIn;
 		myShortT = myShortTIn;
 		myCharT = myCharTIn;
+		myDoubleT = myDoubleTIn;
 	}
 
 	public double getMyDoubleT(){
@@ -47,5 +49,13 @@ public class MyAllTypesSecond extends SerializableObject{
 
 	public void setMyCharT(char value){
 		myCharT = value;
+	}
+
+	public double getMyOtherDoubleT(){
+		return myDoubleT;
+	}
+
+	public void setMyOtherDoubleT(double value){
+		myDoubleT = value;
 	}
 }

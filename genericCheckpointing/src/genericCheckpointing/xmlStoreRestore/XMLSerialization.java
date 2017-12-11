@@ -1,17 +1,27 @@
 package genericCheckpointing.xmlStoreRestore;
 
 import genericCheckpointing.util.SerializableObject;
+import genericCheckpointing.util.Results;
 import java.lang.reflect.Method;
 
 // create a new class to implement the XMLSerialization Strategy
 
 public class XMLSerialization implements SerStrategy {
-
+	private Results results;
 	public XMLSerialization(){
 		//System.out.println("In XMLSerialization - constructor");
 	}
+
+	public XMLSerialization(String fileName){
+		//System.out.println("In XMLSerialization - constructor");
+		results = new Results(fileName);
+	}
+
+    public void closeFile(){
+    	results.closeWriter();
+    }
     
-    public void processInput(SerializableObject sObject) {
+    public SerializableObject processInput(SerializableObject sObject) {
     	try{
     		String XMLText = "<DPSerialization>\n";
 
@@ -22,7 +32,7 @@ public class XMLSerialization implements SerStrategy {
       		// all the code to create the output file with XML snippets for
      		// an object
 
-    		XMLText += "  <complexType xsi:type="+cls.getName()+">\n";
+    		XMLText += "  <complexType xsi:type=\""+cls.getName()+"\">\n";
 
     		if(className.equals("genericCheckpointing.util.MyAllTypesFirst")){
     			String fieldName = "MyInt";
@@ -79,17 +89,26 @@ public class XMLSerialization implements SerStrategy {
         		getterMethod = cls.getMethod(methodName);
         		invokeRet = getterMethod.invoke(sObject);
         		XMLText += "    <myCharT xsi:type=\"xsd:char\">"+invokeRet+"</myCharT>\n";
+
+                fieldName = "MyOtherDoubleT";
+                methodName = "get" + fieldName;
+                getterMethod = cls.getMethod(methodName);
+                invokeRet = getterMethod.invoke(sObject);
+                XMLText += "    <myOtherDoubleT xsi:type=\"xsd:double\">"+invokeRet+"</myOtherDoubleT>\n";
     		}
 
     		XMLText += "  </complexType>\n";
 			XMLText += "</DPSerialization>";
 
         	System.out.println(XMLText);
+        	results.writeSchedulesToFile(XMLText);
+            return null;
     	}
     	catch(Exception ex){
     		System.err.println(ex.getMessage());// prints the error message.
 	    	ex.printStackTrace();// prints stack trace.
 	    	System.exit(0);
+            return null;
     	}
    }
 }

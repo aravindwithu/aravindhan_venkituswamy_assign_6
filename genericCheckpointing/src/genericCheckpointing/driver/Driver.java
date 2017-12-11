@@ -5,6 +5,7 @@ import genericCheckpointing.util.SerializableObject;
 import genericCheckpointing.util.MyAllTypesFirst;
 import genericCheckpointing.util.MyAllTypesSecond;
 import genericCheckpointing.util.MyLogger;
+import genericCheckpointing.util.FileProcessor;
 import genericCheckpointing.server.RestoreI;
 import genericCheckpointing.server.StoreI;
 import genericCheckpointing.server.StoreRestoreI;
@@ -16,6 +17,7 @@ public class Driver
 	public static void main(String[] args) 
 	{
 		MyLogger myLogger; 
+		FileProcessor file;
 		// FIXME: read the value of checkpointFile from the command line
 	   // FileProcessor file;
 	    try{
@@ -85,51 +87,34 @@ public class Driver
 										 );
 			// FIXME: invoke a method on the handler instance to set the file name for checkpointFile and open the file
 
-			// storeRestoreHandler.invoke(myFirst, setCheckpointFile,)
-
-
 			// Use an if/switch to proceed according to the command line argument
 			// For deser, just deserliaze the input file into the data structure and then print the objects
 			
 			if(mode.equals("serdeser")){
-				Vector<MyAllTypesFirst> myFirst = new Vector<MyAllTypesFirst>();
-				Vector<MyAllTypesSecond> mySecond = new Vector<MyAllTypesSecond>();
-				// The code below is for "serdeser" mode
-				// For "serdeser" mode, both the serialize and deserialize functionality should be called.
-
-				// create a data structure to store the objects being serialized
-				//vector serObj = new vector();
-			    // NUM_OF_OBJECTS refers to the count for each of MyAllTypesFirst and MyAllTypesSecond
+				Vector<SerializableObject> serVectorOld = new Vector<SerializableObject>();
+				((StoreI) cpointRef).setCheckPointFile(outputFile);
 				for (int i=0; i<N; i++) {
 					float a = 3.3f;
 					short b = 1;
-					myFirst.add(new MyAllTypesFirst(i+10, i*9999, "random", true, i+2));
-					mySecond.add(new MyAllTypesSecond(i*9.9, a, b,'c'));
-
-				    // FIXME: create these object instances correctly using an explicit value constructor
-				    // use the index variable of this loop to change the values of the arguments to these constructors
-				    // myFirst = new MyAllTypesFirst();
-				    // mySecond = new MyAllTypesSecond();
-
-				    // FIXME: store myFirst and mySecond in the data structure
-				    ((StoreI) cpointRef).writeObj(myFirst.get(i), "XML");
-				    ((StoreI) cpointRef).writeObj(mySecond.get(i), "XML");
-
+					MyAllTypesFirst myObjFirst = new MyAllTypesFirst(i+10, i*9999, "random", true, i+2);
+					serVectorOld.add(myObjFirst);
+					((StoreI) cpointRef).writeObj(myObjFirst, "XML");
+					
+					MyAllTypesSecond myObjSecound = new MyAllTypesSecond(i*9.9, a, b,'c', i*4.4);
+					serVectorOld.add(myObjSecound);
+				    ((StoreI) cpointRef).writeObj(myObjSecound, "XML");
 				}
-				
+				((StoreI) cpointRef).closeCheckPointFile();
 			}
 			else{
-				/*SerializableObject myRecordRet;
-				// create a data structure to store the returned ojects
+				Vector<SerializableObject> serVectorNew = new Vector<SerializableObject>();
+				((RestoreI) cpointRef).setReadFile(outputFile);
 				for (int j=0; j<2*N; j++) {
-			    	myRecordRet = ((RestoreI) cpointRef).readObj("XML");
-			    	// FIXME: store myRecordRet in the vector
-				}*/
+					SerializableObject deSerObj= (SerializableObject)((RestoreI) cpointRef).readObj("read");
+					serVectorNew.add(deSerObj);
+				}
+				((RestoreI) cpointRef).closeReadFile();
 			}
-
-
-
-
 
 			// FIXME: invoke a method on the handler to close the file (if it hasn't already been closed)
 

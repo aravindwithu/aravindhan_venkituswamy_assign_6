@@ -6,6 +6,8 @@ import java.lang.reflect.InvocationHandler;
 
 public class StoreRestoreHandler implements InvocationHandler{
 
+  private SerStrategy strategy = null;
+  private SerStrategy strategy2 = null;
   public StoreRestoreHandler(){
 
   }
@@ -18,29 +20,49 @@ public class StoreRestoreHandler implements InvocationHandler{
    
     // if statements to check if it is the read method so that
     // deserialization can be done ... }
-
     if(m.getName().equals("writeObj")){
       if(args[1].toString().equals("XML")){
-        //System.out.println(m.getName());
-        SerStrategy strategy = new XMLSerialization();
-        serializeData((SerializableObject)args[0] ,strategy);
+        return (Object)serializeData((SerializableObject)args[0] ,strategy);
       }
-    }else{
-      System.out.println(m.getName());
     }
-
+    else if(m.getName().equals("readObj")){
+      return (Object)deSerializeData(args[0].toString() ,strategy);
+    }
+    else if(m.getName().equals("setCheckPointFile")){
+      if(strategy == null){
+          strategy = new XMLSerialization(args[0].toString());
+      }
+    }
+    else if(m.getName().equals("closeCheckPointFile")){
+      if(strategy != null){
+        strategy.closeFile();
+        strategy = null;
+      }
+    }
+    else if(m.getName().equals("setReadFile")){
+      if(strategy == null){
+        strategy = new XMLDeserialization(args[0].toString());
+      }
+    }
+    else if(m.getName().equals("closeReadFile")){
+      if(strategy == null){
+        strategy.closeFile();
+        strategy = null;
+      }
+    }
     return null;
-
   }
 
-   public void serializeData(SerializableObject sObject, SerStrategy sStrategy) {
-        sStrategy.processInput(sObject);
-    }
+  public SerializableObject serializeData(SerializableObject sObject, SerStrategy sStrategy) {
+        sObject = sStrategy.processInput(sObject);
+        return sObject;
+  }
 
-    public void deSerializeData(SerializableObject sObject, SerStrategy sStrategy) {
-        SerStrategy strategy = new XMLDeserialization();
-        strategy.processInput(sObject);
-    }
+  public SerializableObject deSerializeData(String wireFormat, SerStrategy sStrategy) {
+      SerializableObject sObject = new SerializableObject();
+      sObject = sStrategy.processInput(sObject);
+      return sObject;
+  }
 
 }
 
