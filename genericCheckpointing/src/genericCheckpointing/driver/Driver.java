@@ -100,7 +100,7 @@ public class Driver
 					serVectorOld.add(myObjFirst);
 					((StoreI) cpointRef).writeObj(myObjFirst, "XML");
 					
-					MyAllTypesSecond myObjSecound = new MyAllTypesSecond(i*9.9, a, b,'c', i*4.4);
+					MyAllTypesSecond myObjSecound = new MyAllTypesSecond(i*9.9, a, b,'c', i*4.);
 					serVectorOld.add(myObjSecound);
 				    ((StoreI) cpointRef).writeObj(myObjSecound, "XML");
 				}
@@ -110,7 +110,7 @@ public class Driver
 				Vector<SerializableObject> serVectorNew = new Vector<SerializableObject>();
 				((RestoreI) cpointRef).setReadFile(outputFile);
 				for (int j=0; j<2*N; j++) {
-					SerializableObject deSerObj= (SerializableObject)((RestoreI) cpointRef).readObj("read");
+					SerializableObject deSerObj= (SerializableObject)((RestoreI) cpointRef).readObj(outputFile);
 					serVectorNew.add(deSerObj);
 				}
 				((RestoreI) cpointRef).closeReadFile();

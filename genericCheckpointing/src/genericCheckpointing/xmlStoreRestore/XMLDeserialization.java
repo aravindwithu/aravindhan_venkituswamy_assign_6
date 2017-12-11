@@ -3,6 +3,7 @@ package genericCheckpointing.xmlStoreRestore;
 import genericCheckpointing.util.SerializableObject;
 import genericCheckpointing.util.FileProcessor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
 
 // create a new class to implement the XMLSerialization Strategy
 
@@ -10,7 +11,6 @@ public class XMLDeserialization implements SerStrategy {
     private FileProcessor file = null;
 
     public XMLDeserialization(){
-		//System.out.println("In XMLSerialization - constructor");
 	}
 
     public XMLDeserialization(String fileIn){
@@ -23,18 +23,22 @@ public class XMLDeserialization implements SerStrategy {
 	
     public SerializableObject processInput(SerializableObject sObject) {
 		try{
-			System.out.println("deser");
 	    	String line;
+	    	Object objInst = null;
+	    	Class<?> cls;
+	    	Constructor<?> cons;
+
 			while ((line = file.readLine(true)) != null)
 		    {		    
 	    		String[] words = line.split("=");
 	    		if(words.length>=2){
-	    			System.out.println(words[1]);
-	    			String[] tagWord = words[1].split(">");
-	    			if(tagWord.length>=2){
-	    				System.out.println(tagWord[0]);
-	    				String[] tagValue = tagWord[1].split("<");
-	    				System.out.println("value -> " + tagValue[0]);
+
+	    			String className = getClassName(words[1]);
+	    			if(!className.equals("")){
+	    				cls = Class.forName(className);
+	    				cons = cls.getConstructor();
+	    				objInst = cons.newInstance();
+	    				return (SerializableObject)setObj(objInst, cls);
 	    			}
 	    		}
 	    	}
@@ -48,6 +52,141 @@ public class XMLDeserialization implements SerStrategy {
 	    	return null;
     	}
    }
+
+   private Object setObj(Object objInst, Class<?> cls){
+   	try{
+   		String lineIn = "";
+		while ((lineIn = file.readLine(true)) != null)
+		{ 
+			if(lineIn.replace(" ","").equals("</complexType>")){
+				return objInst;
+			}else{
+				String[] words = lineIn.split("=");
+				String methodName = "set" + getFieldName(words[0].trim());
+
+				String fieldType = getFieldType(words[1].trim());
+				String fieldValue = getFieldValue(words[1].trim());
+				Method setterMethod = processSetterMethod(cls, methodName, fieldType);
+				Object setObjVal = processSetObjVal(fieldType, fieldValue);
+       			setterMethod.invoke(objInst, setObjVal);
+			}
+		}
+		return null;
+	}
+	catch(Exception ex){
+    		System.err.println(ex.getMessage());// prints the error message.
+	    	ex.printStackTrace();// prints stack trace.
+	    	System.exit(0);
+	    	return null;
+    	}
+
+   }
+
+   private Method processSetterMethod(Class<?> cls, String methodName, String fieldType){
+   	try{
+   		Method rtnMethod = null;
+   		if(fieldType.equals("int")){
+   			rtnMethod = cls.getMethod(methodName, int.class);
+   		}
+   		else if(fieldType.equals("short")){
+   			rtnMethod = cls.getMethod(methodName, short.class);
+   		}
+   		else if(fieldType.equals("double")){
+   			rtnMethod = cls.getMethod(methodName, double.class);
+   		}
+   		else if(fieldType.equals("float")){
+   			rtnMethod = cls.getMethod(methodName, float.class);
+   		}
+   		else if(fieldType.equals("long")){
+   			rtnMethod = cls.getMethod(methodName, long.class);
+   		}
+   		else if(fieldType.equals("string")){
+   			rtnMethod = cls.getMethod(methodName, String.class);
+   		}
+   		if(fieldType.equals("char")){
+   			rtnMethod = cls.getMethod(methodName, char.class);
+   		}
+   		if(fieldType.equals("boolean")){
+   			rtnMethod = cls.getMethod(methodName, boolean.class);
+   		}
+   		return rtnMethod;
+   	}
+	catch(Exception ex){
+    		System.err.println(ex.getMessage());// prints the error message.
+	    	ex.printStackTrace();// prints stack trace.
+	    	System.exit(0);
+	    	return null;
+    	}
+   }
+
+   private Object processSetObjVal(String fieldType, String fieldValue){
+   	try{
+   		Object rtnObjVal = null;
+   		if(fieldType.equals("int")){
+   			rtnObjVal = Integer.parseInt(fieldValue);
+   		}
+   		else if(fieldType.equals("short")){
+   			rtnObjVal = Short.parseShort(fieldValue);
+   		}
+   		else if(fieldType.equals("double")){
+   			rtnObjVal = Double.parseDouble(fieldValue);
+   		}
+   		else if(fieldType.equals("float")){
+   			rtnObjVal = Float.parseFloat(fieldValue);
+   		}
+   		else if(fieldType.equals("long")){
+   			rtnObjVal = Long.parseLong(fieldValue);
+   		}
+   		else if(fieldType.equals("string")){
+   			rtnObjVal = fieldValue;
+   		}
+   		if(fieldType.equals("char")){
+   			rtnObjVal = fieldValue.charAt(0);
+   		}
+   		if(fieldType.equals("boolean")){
+   			rtnObjVal = Boolean.parseBoolean(fieldValue);
+   		}
+   		return rtnObjVal;
+   	}
+	catch(Exception ex){
+    		System.err.println(ex.getMessage());// prints the error message.
+	    	ex.printStackTrace();// prints stack trace.
+	    	System.exit(0);
+	    	return null;
+    	}
+   }
+
+   private String getFieldName(String str){
+   		String[] strSplit = str.split(" ");
+   		String rtnStr = strSplit[0].replace("<","");
+   		return rtnStr;
+   }
+
+   private String getFieldType(String str){
+   		String[] strSplit = str.split(">");
+   		String rtnStr = strSplit[0].replace("\"", "").replace("xsd:","");
+   		return rtnStr;
+   }
+
+   private String getFieldValue(String str){
+   		String[] strSplit = str.split(">");
+   		String[] strVal = strSplit[1].split("<");
+   		String rtnStr = strVal[0];
+   		return rtnStr;
+   }
+
+   private String getClassName(String str){
+   		str = str.replace("\"", "");
+		str = str.replace(">", "");
+
+		String className = "";
+
+		if(str.equals("genericCheckpointing.util.MyAllTypesFirst")){
+			className = "genericCheckpointing.util.MyAllTypesFirst";  
+		}
+		else if(str.equals("genericCheckpointing.util.MyAllTypesSecond")){
+			className = "genericCheckpointing.util.MyAllTypesSecond"; 
+		}
+		return className;
+   }
 }
-
-

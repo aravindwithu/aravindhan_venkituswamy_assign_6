@@ -35,62 +35,62 @@ public class XMLSerialization implements SerStrategy {
     		XMLText += "  <complexType xsi:type=\""+cls.getName()+"\">\n";
 
     		if(className.equals("genericCheckpointing.util.MyAllTypesFirst")){
-    			String fieldName = "MyInt";
+    			String fieldName = "myInt";
 	  			String methodName = "get" + fieldName;
         		Method getterMethod = cls.getMethod(methodName);
         		Object invokeRet = getterMethod.invoke(sObject);
         		XMLText += "    <myInt xsi:type=\"xsd:int\">"+invokeRet+"</myInt>\n";
 
-        		fieldName = "MyLong";
+        		fieldName = "myLong";
 	  			methodName = "get" + fieldName;
         		getterMethod = cls.getMethod(methodName);
         		invokeRet = getterMethod.invoke(sObject);
         		XMLText += "    <myLong xsi:type=\"xsd:long\">"+invokeRet+"</myLong>\n";
 
-    			fieldName = "MyString";
+    			fieldName = "myString";
 	  			methodName = "get" + fieldName;
         		getterMethod = cls.getMethod(methodName);
         		invokeRet = getterMethod.invoke(sObject);
         		XMLText += "    <myString xsi:type=\"xsd:string\">"+invokeRet+"</myString>\n";
 
-        		fieldName = "MyBool";
+        		fieldName = "myBool";
 	  			methodName = "get" + fieldName;
         		getterMethod = cls.getMethod(methodName);
         		invokeRet = getterMethod.invoke(sObject);
         		XMLText += "    <myBool xsi:type=\"xsd:boolean\">"+invokeRet+"</myBool>\n";
 
-        		fieldName = "MyOtherInt";
+        		fieldName = "myOtherInt";
 	  			methodName = "get" + fieldName;
         		getterMethod = cls.getMethod(methodName);
         		invokeRet = getterMethod.invoke(sObject);
         		XMLText += "    <myOtherInt xsi:type=\"xsd:int\">"+invokeRet+"</myOtherInt>\n";
 
     		}else{
-    			String fieldName = "MyDoubleT";
+    			String fieldName = "myDoubleT";
 	  			String methodName = "get" + fieldName;
         		Method getterMethod = cls.getMethod(methodName);
         		Object invokeRet = getterMethod.invoke(sObject);
         		XMLText += "    <myDoubleT xsi:type=\"xsd:double\">"+invokeRet+"</myDoubleT>\n";
 
-        		fieldName = "MyFloatT";
+        		fieldName = "myFloatT";
 	  			methodName = "get" + fieldName;
         		getterMethod = cls.getMethod(methodName);
         		invokeRet = getterMethod.invoke(sObject);
         		XMLText += "    <myFloatT xsi:type=\"xsd:float\">"+invokeRet+"</myFloatT>\n";
 
-    			fieldName = "MyShortT";
+    			fieldName = "myShortT";
 	  			methodName = "get" + fieldName;
         		getterMethod = cls.getMethod(methodName);
         		invokeRet = getterMethod.invoke(sObject);
         		XMLText += "    <myShortT xsi:type=\"xsd:short\">"+invokeRet+"</myShortT>\n";
 
-        		fieldName = "MyCharT";
+        		fieldName = "myCharT";
 	  			methodName = "get" + fieldName;
         		getterMethod = cls.getMethod(methodName);
         		invokeRet = getterMethod.invoke(sObject);
         		XMLText += "    <myCharT xsi:type=\"xsd:char\">"+invokeRet+"</myCharT>\n";
 
-                fieldName = "MyOtherDoubleT";
+                fieldName = "myOtherDoubleT";
                 methodName = "get" + fieldName;
                 getterMethod = cls.getMethod(methodName);
                 invokeRet = getterMethod.invoke(sObject);

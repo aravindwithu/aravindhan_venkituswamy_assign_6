@@ -10,6 +10,10 @@ public class MyAllTypesSecond extends SerializableObject{
 	private MyLogger myLogger;
 	private double myOtherDoubleT;
 
+	public MyAllTypesSecond(){
+
+	}
+
 	public MyAllTypesSecond(double myDoubleTIn, float myFloatTIn, short myShortTIn, char myCharTIn, double myOtherDoubleTIn){
 		myLogger.writeMessage("Inside MyAllTypesSecond constructor",MyLogger.DebugLevel.CONSTRUCTOR);
 		myDoubleT = myDoubleTIn;
@@ -19,43 +23,43 @@ public class MyAllTypesSecond extends SerializableObject{
 		myDoubleT = myDoubleTIn;
 	}
 
-	public double getMyDoubleT(){
+	public double getmyDoubleT(){
 		return myDoubleT;
 	}
 
-	public void setMyDoubleT(double value){
+	public void setmyDoubleT(double value){
 		myDoubleT = value;
 	}
 
-	public float getMyFloatT(){
+	public float getmyFloatT(){
 		return myFloatT;
 	}
 
-	public void setMyFloatT(float value){
+	public void setmyFloatT(float value){
 		myFloatT = value;
 	}
 
-	public short getMyShortT(){
+	public short getmyShortT(){
 		return myShortT;
 	}
 
-	public void setMyShortT(short value){
+	public void setmyShortT(short value){
 		myShortT = value;
 	}
 
-	public char getMyCharT(){
+	public char getmyCharT(){
 		return myCharT;
 	}
 
-	public void setMyCharT(char value){
+	public void setmyCharT(char value){
 		myCharT = value;
 	}
 
-	public double getMyOtherDoubleT(){
+	public double getmyOtherDoubleT(){
 		return myDoubleT;
 	}
 
-	public void setMyOtherDoubleT(double value){
+	public void setmyOtherDoubleT(double value){
 		myDoubleT = value;
 	}
 }
