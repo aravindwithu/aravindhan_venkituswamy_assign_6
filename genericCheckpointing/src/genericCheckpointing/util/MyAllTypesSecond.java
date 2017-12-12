@@ -7,10 +7,12 @@ public class MyAllTypesSecond extends SerializableObject{
 	private char myCharT;
 	private double myOtherDoubleT;
 
+	// constructor
 	public MyAllTypesSecond(){
 
 	}
 
+	// constructor with values to intialize
 	public MyAllTypesSecond(double myDoubleTIn, float myFloatTIn, short myShortTIn, char myCharTIn, double myOtherDoubleTIn){
 		myDoubleT = myDoubleTIn;
 		myFloatT = myFloatTIn;
@@ -19,6 +21,7 @@ public class MyAllTypesSecond extends SerializableObject{
 		myDoubleT = myDoubleTIn;
 	}
 
+	// getter setter methods
 	public double getmyDoubleT(){
 		return myDoubleT;
 	}

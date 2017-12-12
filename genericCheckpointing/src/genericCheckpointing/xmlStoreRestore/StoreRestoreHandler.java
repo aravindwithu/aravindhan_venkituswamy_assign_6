@@ -8,6 +8,8 @@ public class StoreRestoreHandler implements InvocationHandler{
 
   private SerStrategy strategy = null;
   private SerStrategy strategy2 = null;
+
+  // constructor
   public StoreRestoreHandler(){
 
   }
@@ -53,11 +55,13 @@ public class StoreRestoreHandler implements InvocationHandler{
     return null;
   }
 
+  // serialize data
   public SerializableObject serializeData(SerializableObject sObject, SerStrategy sStrategy) {
         sObject = sStrategy.processInput(sObject);
         return sObject;
   }
 
+  // deserialize data
   public SerializableObject deSerializeData(String wireFormat, SerStrategy sStrategy) {
       SerializableObject sObject = new SerializableObject();
       sObject = sStrategy.processInput(sObject);

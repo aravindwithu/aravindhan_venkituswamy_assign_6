@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 public class ProxyCreator{
+	// create proxy method
 	public StoreRestoreI createProxy(Class<?>[] interfaceArray, InvocationHandler handler){
 		
     StoreRestoreI storeRestoreRef = (StoreRestoreI)Proxy.newProxyInstance(

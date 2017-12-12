@@ -10,19 +10,24 @@ import java.lang.reflect.Type;
 
 public class XMLSerialization implements SerStrategy {
 	private Results results;
+
+    // constructor
 	public XMLSerialization(){
 		//System.out.println("In XMLSerialization - constructor");
 	}
 
+    // constructor
 	public XMLSerialization(String fileName){
 		//System.out.println("In XMLSerialization - constructor");
 		results = new Results(fileName);
 	}
 
+    // close the file
     public void closeFile(){
     	results.closeWriter();
     }
     
+    // process the objects to file.
     public SerializableObject processInput(SerializableObject sObject) {
     	try{
     		String XMLText = "<DPSerialization>\n";
@@ -67,6 +72,7 @@ public class XMLSerialization implements SerStrategy {
     	}
    }
 
+   // isValidValue to check the value above 10 or not
    private boolean isValidValue(Type fieldType , Object value){
         if(fieldType == int.class){
             if((int)value<10){

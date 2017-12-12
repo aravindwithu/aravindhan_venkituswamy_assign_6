@@ -22,7 +22,7 @@ public class Driver
 	    	// command line validation for input file and output file respectively.
 	    	String mode = "", outputFile = "";
 	    	int N =0 , logger = 0;
-		    if(4 == args.length){// validates given arguments array length to 3.
+		    if(3 == args.length){// validates given arguments array length to 3.
 		    	if(!args[0].equals("${arg0}") && !args[0].equals("")){// validates 1st input file argument value.
 		    		mode = args[0];
 		    	}
@@ -69,7 +69,9 @@ public class Driver
 			// For deser, just deserliaze the input file into the data structure and then print the objects
 			
 			if(mode.equals("serdeser")){
+				// serialize, deserialize mode
 				Vector<SerializableObject> serVector = new Vector<SerializableObject>();
+				// set file
 				((StoreI) cpointRef).setCheckPointFile(outputFile);
 				for (int i=0; i<N; i++) {
 					boolean aBool = ((i%2) == 0);
@@ -85,6 +87,7 @@ public class Driver
 					serVector.add(myObjSecound);
 				    ((StoreI) cpointRef).writeObj(myObjSecound, "XML");
 				}
+				// close file
 				((StoreI) cpointRef).closeCheckPointFile();
 
 				Vector<SerializableObject> deserVector = new Vector<SerializableObject>();
@@ -107,13 +110,16 @@ public class Driver
 				System.out.println("Number of mismatch obj is "+missCount);
 			}
 			else{
+				// deserialize mode
 				Vector<SerializableObject> deserVector = new Vector<SerializableObject>();
+				// set file
 				((RestoreI) cpointRef).setReadFile(outputFile);
 				for (int j=0; j<2*N; j++) {
 					SerializableObject deSerObj= (SerializableObject)((RestoreI) cpointRef).readObj(outputFile);
 					deserVector.add(deSerObj);
 					System.out.println(deSerObj.toString()+"\n");
 				}
+				// close file
 				((RestoreI) cpointRef).closeReadFile();
 			}
 
@@ -129,7 +135,7 @@ public class Driver
 	    	System.exit(0);
 	    }
 	    finally{// Clears all the objects created.
-
+	    	file = null;
 	    }
 	}
 }

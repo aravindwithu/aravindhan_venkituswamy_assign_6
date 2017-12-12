@@ -10,7 +10,12 @@ ant -buildfile src/build.xml all
 -----------------------------------------------------------------------
 ## To run by specifying arguments from command line 
 ## We will use this to run your code
-ant -buildfile src/build.xml run -Darg0=input.txt -Darg1=output.txt -Darg2=0
+
+ant -buildfile src/build.xml run -Darg0="MODE" -Darg1=N -Darg2=output.txt
+
+example: 
+ant -buildfile src/build.xml run -Darg0="serdeser" -Darg1=20 -Darg2=output.txt
+ant -buildfile src/build.xml run -Darg0="deser" -Darg1=20 -Darg2=output.txt
 
 -----------------------------------------------------------------------
 
@@ -33,12 +38,14 @@ grade of 0 for the involved assignment for my first offense and that I
 will receive a grade of F for the course for any additional
 offense.”
 
-[Date: __/__/____]
+[Date: 12/11/2017]
 
 -----------------------------------------------------------------------
 
 Provide justification for Data Structures used in this assignment in
 term of Big O complexity (time and/or space)
+
+vector array is used with O(n) time complexity
 
 -----------------------------------------------------------------------
 

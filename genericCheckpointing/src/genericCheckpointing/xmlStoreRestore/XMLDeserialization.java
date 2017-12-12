@@ -8,20 +8,24 @@ import java.lang.reflect.Constructor;
 // create a new class to implement the XMLSerialization Strategy
 
 public class XMLDeserialization implements SerStrategy {
-    private FileProcessor file = null;
+  private FileProcessor file = null;
 
-    public XMLDeserialization(){
+  // constructor
+  public XMLDeserialization(){
 	}
 
-    public XMLDeserialization(String fileIn){
+  // constructor to set file name for file processor
+  public XMLDeserialization(String fileIn){
     	file = new FileProcessor(fileIn);
 	}
 
+  // close file to close file processor
 	public void closeFile(){
     	file.closeFile();
     }
 	
-    public SerializableObject processInput(SerializableObject sObject) {
+  // processInput where deserializaion for given file is done
+  public SerializableObject processInput(SerializableObject sObject) {
 		try{
 	    	String line;
 	    	Object objInst = null;
@@ -53,6 +57,7 @@ public class XMLDeserialization implements SerStrategy {
     	}
    }
 
+   // set the respective object
    private Object setObj(Object objInst, Class<?> cls){
    	try{
    		String lineIn = "";
@@ -81,6 +86,7 @@ public class XMLDeserialization implements SerStrategy {
 
    }
 
+   // process the setter method
    private Method processSetterMethod(Class<?> cls, String methodName, String fieldType){
    	try{
    		Method rtnMethod = null;
@@ -118,6 +124,7 @@ public class XMLDeserialization implements SerStrategy {
     	}
    }
 
+   // process the set object value
    private Object processSetObjVal(String fieldType, String fieldValue){
    	try{
    		Object rtnObjVal = null;
@@ -155,18 +162,21 @@ public class XMLDeserialization implements SerStrategy {
     	}
    }
 
+   // gets the field name
    private String getFieldName(String str){
    		String[] strSplit = str.split(" ");
    		String rtnStr = strSplit[0].replace("<","");
    		return rtnStr;
    }
 
+   // gets field types
    private String getFieldType(String str){
    		String[] strSplit = str.split(">");
    		String rtnStr = strSplit[0].replace("\"", "").replace("xsd:","");
    		return rtnStr;
    }
 
+   // gets the field value
    private String getFieldValue(String str){
    		String[] strSplit = str.split(">");
    		String[] strVal = strSplit[1].split("<");
@@ -174,18 +184,10 @@ public class XMLDeserialization implements SerStrategy {
    		return rtnStr;
    }
 
+   // gets class Name
    private String getClassName(String str){
-   		str = str.replace("\"", "");
+   	str = str.replace("\"", "");
 		str = str.replace(">", "");
-
-		String className = "";
-
-		if(str.equals("genericCheckpointing.util.MyAllTypesFirst")){
-			className = "genericCheckpointing.util.MyAllTypesFirst";  
-		}
-		else if(str.equals("genericCheckpointing.util.MyAllTypesSecond")){
-			className = "genericCheckpointing.util.MyAllTypesSecond"; 
-		}
-		return className;
+    return str;
    }
 }

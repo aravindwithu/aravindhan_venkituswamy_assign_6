@@ -8,9 +8,11 @@ public class MyAllTypesFirst extends SerializableObject{
 	private boolean myBool;
 	private int myOtherInt;
 
+	// constructor
 	public MyAllTypesFirst(){
 	};
 
+	// constructor with intialization
 	public MyAllTypesFirst(int myIntIn, long myLongIn, String myStringIn, boolean myBoolIn, int myOtherIntIn){
 		myInt = myIntIn;
 		myLong = myLongIn;
@@ -19,6 +21,7 @@ public class MyAllTypesFirst extends SerializableObject{
 		myOtherInt = myOtherIntIn;
 	}
 
+	// Getter setter methods
 	public int getmyInt(){
 		return myInt;
 	}
@@ -59,6 +62,7 @@ public class MyAllTypesFirst extends SerializableObject{
 		myOtherInt = value;
 	}
 
+	// equals override
 	@Override
 	public boolean equals(Object obj){
 		if(! (obj instanceof MyAllTypesFirst)){
@@ -76,12 +80,14 @@ public class MyAllTypesFirst extends SerializableObject{
 		}
 	}
 
+	// hashCode override
 	public int hashCode() {
         int result = 0;
         result = (int) (myInt / 11);
         return result;
     }
 
+    // toString override
 	@Override
 	public String toString(){
 		String str = "MyAllTypesFirst:";
